@@ -21,8 +21,8 @@ import { z } from 'zod'
 // This should map to the config in your smithery.yaml file
 export const configSchema = z.object({
   baseURL: z.string().describe('The base URL of your Domoticz instance'),
-  username: z.string().default('admin').describe('The username'),
-  password: z.string().default('domoticz').describe('The password'),
+  username: z.string().describe('The MCP user username'),
+  password: z.string().describe('The MCP user password'),
 })
 
 export default function createServer({
@@ -46,7 +46,7 @@ export default function createServer({
     async ({ name }) => {
       console.log(config)
       return {
-        content: [{ type: 'text', text: `Hello, ${name}!` }],
+        content: [{ type: 'text', text: `Hello, ${name}!${JSON.stringify(config)}` }],
       }
     },
   )
