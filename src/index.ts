@@ -20,7 +20,9 @@ import { z } from 'zod'
 // Optional: If you have user-level config, define it here
 // This should map to the config in your smithery.yaml file
 export const configSchema = z.object({
-  debug: z.boolean().default(false).describe('Enable debug logging'),
+  baseURL: z.string().describe('The base URL of your Domoticz instance'),
+  username: z.string().default('admin').describe('The username'),
+  password: z.string().default('domoticz').describe('The password'),
 })
 
 export default function createServer({
@@ -41,9 +43,12 @@ export default function createServer({
       description: 'Say hello to someone',
       inputSchema: { name: z.string().describe('Name to greet') },
     },
-    async ({ name }) => ({
-      content: [{ type: 'text', text: `Hello, ${name}!` }],
-    }),
+    async ({ name }) => {
+      console.log(config)
+      return {
+        content: [{ type: 'text', text: `Hello, ${name}!` }],
+      }
+    },
   )
 
   // Add a resource
